@@ -1,3 +1,4 @@
+// Adding JWT middleware for authentication
 const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
@@ -12,3 +13,4 @@ module.exports = function (req, res, next) {
     res.status(401).json({ msg: 'Token is not valid' });
   }
 };
+// End of JWT middleware

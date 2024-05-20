@@ -3,6 +3,7 @@ const auth = require('../middleware/auth');
 const Drawing = require('../models/Drawing');
 const router = express.Router();
 
+// Route to save a drawing
 router.post('/save', auth, async (req, res) => {
   const { drawingData } = req.body;
   try {
@@ -17,6 +18,7 @@ router.post('/save', auth, async (req, res) => {
   }
 });
 
+// Route to get all drawings for a user
 router.get('/all', auth, async (req, res) => {
   try {
     const drawings = await Drawing.find({ userId: req.user.id });
