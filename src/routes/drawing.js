@@ -1,16 +1,29 @@
 const express = require('express');
 const auth = require('../middleware/auth');
+const Drawing = require('../models/Drawing');
 const router = express.Router();
 
-// Placeholder for drawing routes
-router.post('/save', auth, (req, res) => {
-  // Save drawing logic here
-  res.json({ msg: 'Drawing saved' });
+router.post('/save', auth, async (req, res) => {
+  const { drawingData } = req.body;
+  try {
+    const newDrawing = new Drawing({
+      userId: req.user.id,
+      drawingData,
+    });
+    await newDrawing.save();
+    res.json({ msg: 'Drawing saved' });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
 });
 
-router.get('/all', auth, (req, res) => {
-  // Retrieve drawings logic here
-  res.json({ drawings: [] });
+router.get('/all', auth, async (req, res) => {
+  try {
+    const drawings = await Drawing.find({ userId: req.user.id });
+    res.json({ drawings });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
 });
 
 module.exports = router;
